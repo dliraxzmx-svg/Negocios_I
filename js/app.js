@@ -154,3 +154,89 @@ function showSuccessMessage() {
     setTimeout(close, 4500);
     setTimeout(() => toast.remove(), 5000);
 }
+
+// Mostrar / ocultar contraseña
+const togglePassword = document.getElementById("toggle-password");
+const passwordInput = document.getElementById("login-password");
+
+if (togglePassword && passwordInput) {
+
+    togglePassword.addEventListener("click", () => {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+            togglePassword.textContent = "Ocultar";
+
+        } else {
+
+            passwordInput.type = "password";
+            togglePassword.textContent = "Mostrar";
+
+        }
+
+    });
+
+}
+
+
+const rememberMe = document.getElementById("remember-me");
+const emailInput = document.getElementById("login-email");
+
+if (rememberMe && emailInput) {
+
+    const savedEmail =
+        localStorage.getItem("vanta_remember_email");
+
+    if (savedEmail) {
+
+        emailInput.value = savedEmail;
+        rememberMe.checked = true;
+
+    }
+
+}
+
+
+const helpLogin = document.getElementById("help-login");
+
+if (helpLogin) {
+
+    helpLogin.addEventListener("click", () => {
+
+        alert(
+            "Si tienes problemas para iniciar sesión, verifica tu correo y contraseña o regístrate nuevamente en VANTA."
+        );
+
+    });
+
+}
+
+const loginForm = document.getElementById("login-form");
+
+if (loginForm) {
+
+    loginForm.addEventListener("submit", () => {
+
+        if (
+            rememberMe &&
+            emailInput &&
+            rememberMe.checked
+        ) {
+
+            localStorage.setItem(
+                "vanta_remember_email",
+                emailInput.value.trim()
+            );
+
+        } else {
+
+            localStorage.removeItem(
+                "vanta_remember_email"
+            );
+
+        }
+
+    });
+
+}

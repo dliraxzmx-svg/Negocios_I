@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil | VANTA</title><link rel="stylesheet" href="css/style.css"></head>
+<body><nav><a href="inicio.html" class="logo-container">
+    <span class="logo-mark">V</span> VANTA</a><ul><li>
+        <a href="inicio.html">Inicio</a></li><li><a href="catalogo.html">Catálogo</a>
+        </li><li><a href="nosotros.html">Nosotros</a></li><li><a href="inicio.html" 
+            onclick="cerrarSesion()">Cerrar sesión</a></li></ul></nav><main>
+                <section class="tarjeta-seccion profile-vanta"><h2>Mi Perfil</h2>
+                    <div class="profile-box"><div class="avatar-vanta">V</div><div><h3 
+                        id="perfil-nombre">¡Hola!</h3><p id="perfil-correo">usuario@vanta.com</p></div>
+                    </div><div class="profile-actions"><button class="btn btn-secundario" 
+                        onclick="mostrarAlerta('Aquí podrás editar tus datos próximamente.','Editar perfil')">Editar perfil</button>
+                        <button class="btn btn-secundario" onclick="mostrarAlerta('Aquí podrás consultar tus compras.','Mis compras')">Mis compras</button>
+                        <button class="btn btn-secundario" onclick="mostrarAlerta('Aquí podrás guardar tus prendas favoritas.','Lista de deseos')">Lista de deseos</button></div>
+                        <button class="btn" onclick="cerrarSesion();location.href='inicio.html'">Cerrar sesión</button></section></main><div id="customAlert" class="modal-overlay">
+                        <div class="modal-box"><h3 id="alertTitulo">Aviso</h3><p id="alertMensaje">Mensaje</p><button class="btn" onclick="cerrarAlerta()">Aceptar</button>
+                        </div></div><script src="js/app.js"></script></body></html>

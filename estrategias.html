@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrategias | VANTA</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav><a href="inicio.html" class="logo-container"><span class="logo-mark">V</span> VANTA</a><ul><li><a href="inicio.html">Inicio</a></li><li><a href="catalogo.html">Catálogo</a></li><li><a href="estrategias.html">Estrategias</a></li><li><a href="nosotros.html">Nosotros</a></li><li><a id="auth-link" href="login.html">Iniciar sesión</a></li><li class="cart-icon" onclick="abrirCarrito()" title="Carrito">🛒 <span class="cart-badge">0</span></li></ul></nav>
+
+<main class="estrategias-main">
+<div class="estrategias-wrap">
+
+  <header class="estrategias-head">
+    <p class="eyebrow">VANTA · MARKETING Y VENTAS</p>
+    <h1>Estrategias VANTA</h1>
+    <p>Promociones, comunidad, venta entre usuarios y subasta.</p>
+  </header>
+
+  <div class="tabs-estrategias" id="tabs">
+    <button class="tab-btn activo" data-mod="promos" onclick="verModulo('promos')"> Promociones</button>
+    <button class="tab-btn" data-mod="escaparate" onclick="verModulo('escaparate')"> Escaparate</button>
+    <button class="tab-btn" data-mod="comunidad" onclick="verModulo('comunidad')"> Comunidad</button>
+    <button class="tab-btn" data-mod="publicar" onclick="verModulo('publicar')"> Publicar producto</button>
+    <button class="tab-btn" data-mod="mis-publicaciones" onclick="verModulo('mis-publicaciones')"> Mis publicaciones</button>
+    <button class="tab-btn" data-mod="subasta" onclick="verModulo('subasta')"> Subasta en vivo</button>
+  </div>
+
+  <!--  PROMOCIONES -->
+  <section id="mod-promos" class="modulo activo">
+    <div class="promo-hero">
+      <div>
+        <p class="eyebrow" style="color:#bbb">PROMO DE TEMPORADA</p>
+        <h2 id="hero-promo-titulo">¡Súper descuento de temporada!</h2>
+        <p id="hero-promo-texto">Usa el código exclusivo en tu compra.</p>
+      </div>
+      <div>Código: <span class="code-badge" id="hero-promo-codigo">VANTA10</span><button class="copiar-btn" onclick="copiarCodigo()">Copiar</button></div>
+    </div>
+
+    <h2 style="margin-bottom:14px">Promociones activas</h2>
+    <div class="promos-grid" id="promos-grid"></div>
+      
+  </section>
+
+  <!-- 2. ESCAPARATE -->
+  <section id="mod-escaparate" class="modulo">
+    <div class="hero-campana">
+      <div>
+        <span class="tag">EDICIÓN LIMITADA · DROP 01</span>
+        <h1 id="esc-nombre">Producto destacado</h1>
+        <p id="esc-desc"></p>
+        <div class="precio" id="esc-precio"></div>
+        <button class="btn" onclick="comprarDestacado()">¡Comprar ahora!</button>
+      </div>
+      <div><div id="esc-visual" class="producto-visual oscuro"></div></div>
+    </div>
+
+    <div class="beneficios">
+      <div class="beneficio"><span>🚚</span>Envío a todo México</div>
+      <div class="beneficio"><span>🔁</span>Cambios en 30 días</div>
+      <div class="beneficio"><span>✦</span>Producción limitada</div>
+      <div class="beneficio"><span>🔒</span>Pago simulado seguro</div>
+    </div>
+
+    <div class="card-v">
+      <h3>Lo que dicen nuestros clientes</h3>
+      <div class="testimonios" id="testimonios"></div>
+      <p style="margin-top:18px;margin-bottom:0"><a class="btn btn-secundario" href="#comunidad" onclick="verModulo('comunidad');return false">Dejar mi opinión</a></p>
+    </div>
+  </section>
+
+  <!-- 3. COMUNIDAD -->
+  <section id="mod-comunidad" class="modulo">
+    <div class="com-layout">
+      <div class="card-v">
+        <h2>Comunidad VANTA</h2>
+        <p>Cuéntanos qué te parecen nuestras prendas o sugiérenos algo nuevo.</p>
+        <form id="form-comentario" novalidate class="form-ancho" onsubmit="agregarComentario(event)">
+          <div class="form-group"><label for="com-nombre">Tu nombre</label><input type="text" id="com-nombre" maxlength="40" placeholder="Ej. Sofía López"></div>
+          <div class="form-group"><label for="com-rating">Calificación</label><select id="com-rating"><option value="5">★★★★★ · Excelente</option><option value="4">★★★★☆ · Muy bueno</option><option value="3">★★★☆☆ · Bueno</option><option value="2">★★☆☆☆ · Regular</option><option value="1">★☆☆☆☆ · Malo</option></select></div>
+          <div class="form-group"><label for="com-texto">Comentario</label><textarea id="com-texto" rows="4" maxlength="280" placeholder="Escribe tu mensaje aquí..." oninput="document.getElementById('com-contador').textContent=this.value.length+'/280'"></textarea><div class="contador" id="com-contador">0/280</div></div>
+          <button type="submit" class="btn">Publicar comentario</button>
+        </form>
+        <div id="toast-com" class="toast-v"></div>
+      </div>
+      <div class="card-v">
+        <h3>Comentarios recientes</h3>
+        <div class="resumen-rating"><strong id="rating-prom">0.0</strong><div><div class="stars" id="rating-estrellas"></div><small id="rating-total"></small></div></div>
+        <div class="lista-comentarios" id="lista-comentarios"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. C2C - PUBLICAR -->
+  <section id="mod-publicar" class="modulo">
+    <div class="card-v form-c2c">
+      <h2>Publica tu producto</h2>
+      <p>¿Tienes prendas o accesorios para vender? Publícalos y aparecerán en el catálogo con la etiqueta “Comunidad”.</p>
+      <form id="form-c2c" novalidate class="form-ancho" onsubmit="publicarC2C(event)">
+        <div class="form-group"><label for="c2c-titulo">Nombre del producto</label><input type="text" id="c2c-titulo" maxlength="60" placeholder="Ej. Gorra bordada a mano"></div>
+        <div class="form-group"><label for="c2c-precio">Precio (MXN)</label><input type="number" id="c2c-precio" step="0.01" placeholder="250"></div>
+        <div class="form-group"><label for="c2c-categoria">Categoría</label><select id="c2c-categoria"><option value="playeras">Playeras</option><option value="sudaderas">Sudaderas</option><option value="pantalones">Pantalones</option><option value="accesorios" selected>Accesorios</option></select></div>
+        <div class="form-group"><label for="c2c-desc">Descripción</label><textarea id="c2c-desc" rows="3" maxlength="200" placeholder="Detalles de tu producto..."></textarea></div>
+        <div class="form-group"><label for="c2c-foto">Foto del producto (opcional)</label><input type="file" id="c2c-foto" accept="image/*" onchange="previsualizarFoto(this,'c2c-preview')"><img id="c2c-preview" class="preview-foto" alt="Vista previa"></div>
+        <button type="submit" class="btn" style="width:100%">Publicar producto</button>
+      </form>
+      <div id="toast-c2c" class="toast-v"></div>
+    </div>
+  </section>
+
+  <!-- 5. MIS PUBLICACIONES -->
+  <section id="mod-mis-publicaciones" class="modulo">
+    <div class="card-v">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap">
+        <div><h2 style="margin-bottom:4px">Mis publicaciones</h2><p style="margin:0">Gestiona lo que has subido a la comunidad.</p></div>
+        <button class="btn" style="margin-top:0" onclick="verModulo('publicar')">+ Publicar producto</button>
+      </div>
+      <div id="grid-mis-publicaciones" class="grid-c2c"></div>
+    </div>
+  </section>
+
+  <!-- 6. SUBASTA -->
+  <section id="mod-subasta" class="modulo">
+    <div class="card-v subasta-box">
+      <span class="estado" id="sub-estado">SUBASTA EN VIVO</span>
+      <h2 style="margin:12px 0 0">VANTA Drop 01 · Hoodie coleccionable</h2>
+      <p style="margin:6px 0 0;color:#555">Pieza única numerada 001/001</p>
+      <div class="producto-visual oscuro">◐</div>
+      <div class="timer" id="sub-timer">05:00</div>
+      <p style="margin-bottom:4px">Oferta más alta actual</p>
+      <div class="monto-actual" id="sub-monto">$0.00 MXN</div>
+      <small id="sub-lider" style="color:#555"></small>
+
+      <div id="sub-form-zona">
+        <div class="oferta-form"><input type="number" id="sub-oferta" placeholder="Tu oferta" onkeydown="if(event.key==='Enter')hacerOferta()"><button class="btn" onclick="hacerOferta()">Ofertar</button></div>
+        <div class="chips"><button class="chip" onclick="sugerirOferta(10)">+$10</button><button class="chip" onclick="sugerirOferta(50)">+$50</button><button class="chip" onclick="sugerirOferta(100)">+$100</button></div>
+        <small id="sub-minimo" style="display:block;margin-top:8px;color:#777"></small>
+      </div>
+      <div id="sub-resultado"></div>
+      <div id="toast-subasta" class="toast-v"></div>
+
+      <div class="historial"><strong>Historial de ofertas</strong><ul id="lista-ofertas"></ul></div>
+      <button class="reiniciar" onclick="reiniciarSubasta()">Reiniciar subasta (demo)</button>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<!-- Modal editar publicación -->
+<div id="modalEditarC2C" class="modal-overlay"><div class="modal-box admin-modal-form">
+  <h2>Editar publicación</h2>
+  <form id="form-editar-c2c" novalidate class="form-ancho" onsubmit="guardarEdicionC2C(event)">
+    <label for="e-titulo">Nombre</label><input id="e-titulo" maxlength="60">
+    <label for="e-precio">Precio (MXN)</label><input id="e-precio" type="number" step="0.01">
+    <label for="e-categoria">Categoría</label><select id="e-categoria"><option value="playeras">Playeras</option><option value="sudaderas">Sudaderas</option><option value="pantalones">Pantalones</option><option value="accesorios">Accesorios</option></select>
+    <label for="e-desc">Descripción</label><textarea id="e-desc" rows="3" maxlength="200"></textarea>
+    <label for="e-foto">Cambiar foto (opcional)</label><input type="file" id="e-foto" accept="image/*">
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px"><button type="button" class="btn btn-secundario" onclick="cerrarEditarC2C()">Cancelar</button><button class="btn">Guardar cambios</button></div>
+  </form>
+</div></div>
+
+<div id="customAlert" class="modal-overlay"><div class="modal-box"><h3 id="alertTitulo">Aviso</h3><p id="alertMensaje">Mensaje</p><div id="alertBotones"><button class="btn" onclick="cerrarAlerta()">Aceptar</button></div></div></div>
+
+<footer><div class="footer-contenido"><div class="footer-seccion"><h3>VANTA</h3><p>Estilo urbano y contemporáneo.</p></div><div class="footer-seccion"><h3>Enlaces</h3><a href="catalogo.html">Catálogo</a><a href="estrategias.html">Estrategias</a><a href="nosotros.html">Nosotros</a><a href="terminos.html">Términos y condiciones</a></div><div class="footer-seccion"><h3>Cuenta</h3><a href="perfil.html">Mi perfil</a><a href="login.html">Iniciar sesión</a></div></div><div class="footer-bottom"><p>&copy; 2026 VANTA. Todos los derechos reservados.</p></div></footer>
+
+<script src="js/app.js"></script>
+<script src="js/estrategias.js"></script>
+</body>
+</html>

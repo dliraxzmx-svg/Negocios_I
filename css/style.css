@@ -148,6 +148,21 @@ input, textarea {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
     text-align: center; 
 }
+.producto-card .producto-visual { position: relative; overflow: hidden; }
+.producto-oferta {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff9800;
+    color: #fff;
+    padding: 8px 13px;
+    border-radius: 8px;
+    font-size: .9rem;
+    font-weight: 800;
+    line-height: 1;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
 .producto-card img { 
     width: 100%;
     height: 180px; 
@@ -178,7 +193,7 @@ input, textarea {
     box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
 }
 
-/* --- Estilos para el pie de pagina --- */
+/* --- Estilos para el pie de [agina --- */
 footer {
     background-color: var(--color-principal);
     color: white;
@@ -309,7 +324,7 @@ footer {
         width: 100%;
     }
 }
-
+/* ===== ADAPTACIÓN VANTA: conserva el estilo visual del proyecto de referencia ===== */
 :root{--color-principal:#111111;--color-fondo:#ffffff;--blanco-transparente:rgba(255,255,255,.96);--texto-oscuro:#111111}
 body{background:var(--color-fondo)}
 .logo-container{letter-spacing:.5px}.logo-mark,.vanta-logo-big span,.avatar-vanta{display:grid;place-items:center;background:var(--color-principal);color:#fff;width:42px;height:42px;border-radius:8px;font-weight:900}.logo-container{gap:10px}.landing-main{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(rgba(21,21,21,.82),rgba(21,21,21,.92))}.landing-card{max-width:520px;padding:50px 35px}.vanta-logo-big{display:flex;align-items:center;justify-content:center;gap:12px;font-size:2rem;font-weight:900;margin-bottom:25px;letter-spacing:1px}.vanta-logo-big.small{font-size:1.6rem}.vanta-logo-big span{width:52px;height:52px}.landing-card h1{font-size:2.4rem}.landing-note{font-size:.8rem;color:#555;margin-top:20px}.home-card{max-width:760px;padding:60px 35px}.home-card h1{font-size:3rem}.home-card .btn{margin-left:6px;margin-right:6px}.auth-regalos{max-width:450px}.auth-regalos a{color:var(--color-principal);font-weight:bold;text-decoration:none}.producto-visual{height:180px;border-radius:8px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-size:4rem;font-weight:900;background:#d9d9d9;color:#151515}.producto-visual.oscuro{background:#222;color:white}.producto-visual.claro{background:#d8d3ca}.modal-price{color:var(--color-principal);font-size:1.5rem;margin-bottom:10px}.profile-vanta{max-width:700px}.profile-box{background:var(--color-fondo);padding:25px;border-radius:12px;margin-bottom:25px;display:flex;align-items:center;gap:20px;text-align:left}.avatar-vanta{width:82px;height:82px;border-radius:50%;font-size:2rem}.profile-box h3{font-size:1.5rem;margin-bottom:5px}.profile-box p{margin:0;color:#555}.profile-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:25px}.profile-actions .btn{margin-top:0}.cart-icon{position:relative;cursor:pointer;font-size:1.2rem}.cart-badge{background:white;color:var(--color-principal);border-radius:50%;padding:2px 6px;font-size:.7rem;position:absolute;top:-10px;right:-15px;font-weight:bold}
@@ -332,3 +347,39 @@ footer a{color:#fff!important}
 .avatar-vanta{background:#111!important;color:#fff!important}
 .modal-price{color:#111!important}
 input:focus,textarea:focus,select:focus{border-color:#111!important;outline-color:#111!important}
+
+
+/* ===== FUNCIONES INTEGRADAS DE REGALOS STAR 2 ===== */
+.catalogo-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.catalogo-toolbar input{flex:1;min-width:220px;margin:0}
+.cart-item{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:12px 0;border-bottom:1px solid #ddd}
+.cart-item-info{flex:1}.cart-item-acciones{display:flex;align-items:center;gap:8px}
+.selector-cantidad{display:flex;align-items:center;gap:10px;margin:15px 0}
+.selector-cantidad button{width:34px;height:34px;border:1px solid #111;background:#fff;color:#111;border-radius:6px;cursor:pointer;font-weight:bold}
+.btn-eliminar{border:0;background:#111;color:#fff;border-radius:7px;padding:8px 12px;cursor:pointer}
+.terminos-check{display:flex;gap:8px;align-items:center;justify-content:flex-end;font-size:.9rem;margin:15px 0}
+.terminos-check input{width:auto;margin:0}
+.admin-layout{min-height:100vh;display:flex;background:#f5f5f5}
+.admin-sidebar{width:250px;background:#111;color:#fff;padding:25px 15px;display:flex;flex-direction:column}
+.admin-sidebar-header{text-align:center;padding-bottom:20px;border-bottom:1px solid #333}
+.admin-sidebar-header .logo-mark{margin:auto}
+.admin-menu{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.admin-menu button{background:transparent;border:0;color:#fff;text-align:left;padding:13px 15px;border-radius:8px;cursor:pointer;font-size:.95rem}
+.admin-menu button:hover,.admin-menu button.activo{background:#fff;color:#111}
+.admin-content{flex:1;min-width:0}
+.admin-topbar{background:#fff;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.admin-topbar-perfil{display:flex;align-items:center;gap:12px}
+.perfil-avatar{width:42px;height:42px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-weight:bold}
+.admin-main-area{padding:30px}
+.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:25px}
+.stat-card{background:#fff;border-radius:12px;padding:22px;display:flex;align-items:center;gap:15px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+.stat-icon{font-size:1.7rem}.stat-info h3{font-size:1.6rem;margin:0}.stat-info p{margin:0;color:#777}
+.tabla-contenedor{background:#fff;border-radius:12px;padding:25px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+.admin-tabla{width:100%;border-collapse:collapse}.admin-tabla th,.admin-tabla td{padding:12px;border-bottom:1px solid #eee;text-align:left}.admin-tabla th{font-size:.85rem;text-transform:uppercase;color:#666}.admin-tabla td small{color:#888}
+.admin-producto-acciones{display:flex;gap:5px}
+.admin-modal-form{text-align:left;max-width:500px!important;width:calc(100% - 30px)}
+.admin-modal-form label{font-weight:bold;font-size:.9rem;display:block;margin:10px 0 5px}
+.admin-modal-form input,.admin-modal-form select{width:100%;margin:0}
+.profile-actions{grid-template-columns:repeat(2,1fr)}
+.lista-simple{text-align:left;max-height:260px;overflow:auto}.lista-simple .fila{padding:12px 0;border-bottom:1px solid #ddd}
+@media(max-width:800px){.admin-layout{flex-direction:column}.admin-sidebar{width:100%}.admin-menu{flex-direction:row;overflow:auto}.admin-menu button{white-space:nowrap}.admin-stats{grid-template-columns:1fr}.admin-main-area{padding:15px}.admin-topbar{padding:15px}.admin-tabla{min-width:700px}}

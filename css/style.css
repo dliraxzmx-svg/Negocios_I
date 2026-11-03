@@ -383,3 +383,109 @@ input:focus,textarea:focus,select:focus{border-color:#111!important;outline-colo
 .profile-actions{grid-template-columns:repeat(2,1fr)}
 .lista-simple{text-align:left;max-height:260px;overflow:auto}.lista-simple .fila{padding:12px 0;border-bottom:1px solid #ddd}
 @media(max-width:800px){.admin-layout{flex-direction:column}.admin-sidebar{width:100%}.admin-menu{flex-direction:row;overflow:auto}.admin-menu button{white-space:nowrap}.admin-stats{grid-template-columns:1fr}.admin-main-area{padding:15px}.admin-topbar{padding:15px}.admin-tabla{min-width:700px}}
+
+/* ===== BLOQUE 3: ESTRATEGIAS (promociones, escaparate, comunidad, C2C, subasta) ===== */
+.badge-activo,.badge-inactivo{display:inline-block;padding:5px 12px;border-radius:20px;font-size:.8rem;font-weight:bold}
+.badge-activo{background:#111;color:#fff}.badge-inactivo{background:#eee;color:#555;border:1px solid #ccc}
+.admin-producto-acciones button{padding:7px 11px;border-radius:7px;cursor:pointer}
+.admin-producto-acciones .btn-secundario{border:2px solid #111;background:#fff;color:#111}
+.producto-comunidad{position:absolute;top:10px;left:10px;background:#111;color:#fff;padding:7px 11px;border-radius:8px;font-size:.78rem;font-weight:800;line-height:1;z-index:2}
+.det-vendedor{font-size:.85rem;color:#555;font-style:italic}
+.eyebrow{font-size:.75rem;font-weight:800;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:8px}
+.code-badge{display:inline-block;background:#fff;color:#111;border:2px dashed #111;padding:4px 12px;border-radius:6px;font-weight:900;letter-spacing:2px}
+
+/* Carrito con cupón */
+.cupon-row{display:flex;gap:8px;margin-top:6px}.cupon-row input{flex:1;margin:0;text-transform:uppercase}.cupon-row .btn{margin-top:0;padding:10px 18px}
+.cupon-msg{min-height:1.2em;font-size:.85rem;margin:8px 0 0;color:#555}.cupon-msg.ok{color:#111;font-weight:bold}.cupon-msg.error{color:#c0392b}
+.resumen-carrito{border-top:2px solid #111;margin-top:12px;padding-top:10px}
+.resumen-carrito>div{display:flex;justify-content:space-between;padding:4px 0}
+.resumen-carrito a{font-size:.8rem;margin-left:6px;color:#111}
+.resumen-total{font-size:1.25rem;font-weight:900;border-top:1px solid #ddd;margin-top:6px;padding-top:10px!important}
+
+/* Inicio: banner de promo */
+.home-main{flex-direction:column;align-items:center;gap:25px}
+.home-promo{width:100%;max-width:760px;background:#111;color:#fff;border-radius:15px;padding:30px 35px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;text-align:left}
+.home-promo h2{color:#fff;margin:0 0 8px}.home-promo p{margin:0}.home-promo .eyebrow{color:#bbb}
+.home-promo .btn{background:#fff!important;color:#111!important;border-color:#fff!important;display:block;text-align:center}
+.home-promo .btn-secundario{background:transparent!important;color:#fff!important}
+.home-promo-links{display:flex;flex-direction:column;gap:8px}
+
+/* Página Estrategias */
+.estrategias-main{display:block;padding:30px 20px 50px}
+.estrategias-wrap{max-width:1050px;margin:0 auto}
+.estrategias-head{text-align:center;margin-bottom:22px}.estrategias-head h1{margin-bottom:8px}.estrategias-head p{color:#555;margin:0}
+.tabs-estrategias{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;position:sticky;top:0;background:#fff;padding:12px 0;z-index:50;border-bottom:1px solid #eee}
+.tab-btn{background:#fff;color:#111;border:2px solid #111;border-radius:999px;padding:9px 18px;font-weight:bold;cursor:pointer;font-size:.92rem;transition:background .2s,color .2s}
+.tab-btn:hover{background:#eee}.tab-btn.activo{background:#111;color:#fff}
+.modulo{display:none;animation:fadeIn .4s ease-in-out}.modulo.activo{display:block}
+.card-v{background:#fff;border:1px solid #e6e6e6;border-radius:15px;padding:28px;box-shadow:0 10px 20px rgba(0,0,0,.04);margin-bottom:25px}
+.card-v h2,.card-v h3{margin-bottom:12px}.card-v>p{color:#555}
+.form-group{margin-bottom:15px;text-align:left}.form-group label{display:block;margin-bottom:6px;font-weight:bold;font-size:.9rem}
+.form-group input,.form-group select,.form-group textarea{width:100%}
+select{padding:12px;border:1px solid #ccc;border-radius:8px;font-size:1rem;background:#fff}
+.form-ancho{max-width:none;margin:0}
+.toast-v{display:none;margin-top:12px;padding:11px 15px;border-radius:8px;font-size:.92rem;background:#111;color:#fff;text-align:left}
+.toast-v.error{background:#fff;color:#c0392b;border:1px solid #c0392b}
+
+/* Promociones */
+.promo-hero{background:#111;color:#fff;border-radius:15px;padding:28px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:25px}
+.promo-hero h2{color:#fff;margin:0 0 6px}.promo-hero p{margin:0;color:#ddd}.promo-hero .code-badge{font-size:1.2rem}
+.copiar-btn{background:transparent;border:1px solid #fff;color:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;margin-left:8px;font-weight:bold}
+.promos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-bottom:25px}
+.promo-card{border:2px solid #111;border-radius:12px;padding:20px;text-align:left;background:#fff}
+.promo-card .pct{font-size:2.2rem;font-weight:900;line-height:1}.promo-card p{margin:8px 0;font-size:.9rem;color:#555}
+.promo-card.demo{border-style:dashed;background:#fafafa}.promo-card small{color:#777}
+.sim-total{margin-top:18px;font-size:1.2rem}.sim-total s{color:#888;margin-right:6px}
+.sim-acciones{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.sim-fila{display:flex;gap:10px;max-width:420px;margin-top:6px}.sim-fila input{margin:0;text-transform:uppercase}.sim-fila .btn{margin-top:0}
+
+/* Escaparate */
+.hero-campana{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center;background:#111;color:#fff;border-radius:15px;padding:36px;margin-bottom:25px}
+.hero-campana h1{color:#fff;font-size:2.4rem;margin:12px 0}.hero-campana p{color:#ddd}
+.hero-campana .tag{display:inline-block;background:#fff;color:#111;padding:5px 11px;border-radius:5px;font-weight:900;font-size:.75rem;letter-spacing:1.5px}
+.hero-campana .precio{font-size:1.8rem;font-weight:900;margin:14px 0}.hero-campana .precio s{font-size:1.1rem;color:#999;margin-right:8px;font-weight:normal}
+.hero-campana .btn{background:#fff!important;color:#111!important;border-color:#fff!important;padding:14px 32px;font-size:1.1rem}
+.hero-campana .producto-visual{height:280px;font-size:7rem;margin:0}
+.beneficios{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:25px}
+.beneficio{border:1px solid #e6e6e6;border-radius:12px;padding:18px;text-align:center;font-weight:bold}.beneficio span{display:block;font-size:1.6rem;margin-bottom:6px}
+.testimonios{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}
+.comentario{background:#f5f5f5;border-left:4px solid #111;border-radius:8px;padding:15px;text-align:left}
+.comentario p{margin:6px 0 0;font-size:.95rem}.comentario .meta{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;color:#666}
+.stars{letter-spacing:2px;color:#111}
+
+/* Comunidad */
+.com-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:25px;align-items:start}
+.resumen-rating{display:flex;align-items:center;gap:12px;margin-bottom:15px}.resumen-rating strong{font-size:2rem}
+.lista-comentarios{display:flex;flex-direction:column;gap:12px;max-height:520px;overflow:auto}
+.contador{font-size:.8rem;color:#777;text-align:right;margin-top:4px}
+
+/* C2C */
+.form-c2c{max-width:620px;margin:0 auto}
+.preview-foto{width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-top:10px;display:none}
+.grid-c2c{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-top:20px}
+.item-c2c{border:1px solid #e6e6e6;border-radius:12px;padding:15px;background:#fff;text-align:left}
+.item-c2c .producto-visual{height:130px;font-size:2.5rem;margin-bottom:12px;overflow:hidden}
+.item-c2c strong{display:block;margin-bottom:4px}.item-c2c .precio{font-weight:900;margin:4px 0}.item-c2c small{display:block;color:#666;margin-bottom:10px}
+.item-c2c .acciones{display:flex;gap:6px;flex-wrap:wrap}.item-c2c .acciones .btn{margin-top:0;padding:7px 12px;font-size:.85rem}
+.vacio{text-align:center;color:#777;padding:30px 10px}
+
+/* Subasta */
+.subasta-box{max-width:600px;margin:0 auto;text-align:center;border:2px solid #111}
+.subasta-box .estado{display:inline-block;background:#111;color:#fff;padding:5px 14px;border-radius:20px;font-weight:bold;font-size:.8rem;letter-spacing:1px}
+.subasta-box .estado.fin{background:#777}
+.subasta-box .producto-visual{width:170px;height:170px;margin:15px auto;font-size:4rem}
+.timer{font-size:2.6rem;font-weight:900;margin:10px 0;font-variant-numeric:tabular-nums}.timer.urgente{color:#c0392b}
+.monto-actual{font-size:1.6rem;font-weight:900}
+.oferta-form{display:flex;gap:10px;justify-content:center;margin-top:15px;flex-wrap:wrap}.oferta-form input{width:160px;margin:0}.oferta-form .btn{margin-top:0}
+.chips{display:flex;gap:8px;justify-content:center;margin-top:10px}.chip{border:1px solid #111;background:#fff;border-radius:999px;padding:5px 14px;cursor:pointer;font-weight:bold;font-size:.85rem}.chip:hover{background:#111;color:#fff}
+.historial{max-height:190px;overflow:auto;text-align:left;margin-top:18px;background:#f5f5f5;padding:12px 15px;border-radius:8px}
+.historial ul{margin:6px 0 0;padding-left:20px;font-size:.92rem}.historial li{padding:2px 0}
+.ganaste{background:#111;color:#fff;border-radius:10px;padding:18px;margin-top:15px}.ganaste .btn{background:#fff!important;color:#111!important;border-color:#fff!important}
+.reiniciar{margin-top:18px;background:none;border:0;color:#777;text-decoration:underline;cursor:pointer;font-size:.85rem}
+
+@media(max-width:800px){.hero-campana,.com-layout{grid-template-columns:1fr}.hero-campana h1{font-size:1.9rem}.hero-campana .producto-visual{height:200px;font-size:5rem}.home-promo{padding:25px}.tabs-estrategias{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto}.tab-btn{white-space:nowrap}}
+.hero-campana .producto-visual{background:#242424!important;border:1px solid #444;color:#fff!important}
+
+/* Los avisos y confirmaciones siempre quedan por encima de cualquier otra ventana */
+#customAlert{z-index:5000!important}
+#modalCarrito,#modalDetalle,#modalFormProducto,#modalCupon,#modalEditarPerfil,#modalCompras,#modalEditarC2C{z-index:1000}

@@ -137,10 +137,65 @@ function abrirCarrito(){ensureModals();renderCarrito();document.getElementById('
 function procesarPago(){
  const c=getCart();if(!c.length){mostrarAlerta('Agrega algunos productos antes de ir a pagar.','Carrito vacío');return}
  const cb=document.getElementById('terminos-checkbox');if(cb&&!cb.checked){mostrarAlerta('Debes aceptar los términos y condiciones antes de continuar.','Atención');return}
- const t=calcTotales(c);
- const order={id:'ORD-'+Date.now(),fecha:new Date().toLocaleString('es-MX'),items:c,subtotal:t.subtotal,descuento:t.descuento,cupon:t.cupon?t.cupon.codigo:'',total:t.total};
- const orders=JSON.parse(localStorage.getItem('vantaOrders')||'[]');orders.unshift(order);localStorage.setItem('vantaOrders',JSON.stringify(orders));saveCart([]);setCuponAplicado('');cerrarModalCarrito();
- mostrarAlerta(`Pedido ${order.id} generado por ${money(t.total)}${t.cupon?` (cupón ${t.cupon.codigo}: −${money(t.descuento)})`:''}. El checkout real se integrará posteriormente.`,'¡Pedido generado!');
+ location.href='checkout.html';
+}
+
+/* ===== BLOQUE 4: checkout, pagos simulados, ticket e historial ===== */
+const ESTADOS_PEDIDO=['Pendiente (Efectivo)','Pagado','En preparación','Enviado','Entregado','Cancelado'];
+const METODOS_PAGO={tarjeta:'Tarjeta de crédito / débito',transferencia:'Transferencia SPEI',ewallet:'E-wallet VANTA Pay',efectivo:'Pago en efectivo'};
+const WALLET_INICIAL=2000;
+const CORREO_INVITADO='invitado@vanta.com';
+function getOrders(){try{const o=JSON.parse(localStorage.getItem('vantaOrders'));return Array.isArray(o)?o.map(normalizarPedido):[]}catch(e){return[]}}
+function saveOrders(o){localStorage.setItem('vantaOrders',JSON.stringify(o))}
+/* Los pedidos del Bloque 3 no tenían estos campos: se completan al leerlos para que sigan viéndose bien. */
+function normalizarPedido(o){return{...o,items:Array.isArray(o.items)?o.items:[],estado:o.estado||'Pagado',metodo:o.metodo||'',metodoTxt:o.metodoTxt||METODOS_PAGO[o.metodo]||'Pago simulado',cliente:o.cliente||'',correo:o.correo||'',direccion:o.direccion||'',descuento:Number(o.descuento)||0,subtotal:Number(o.subtotal)||Number(o.total)||0,total:Number(o.total)||0}}
+function getWallet(){const v=parseFloat(localStorage.getItem('vantaWallet'));return Number.isFinite(v)?v:WALLET_INICIAL}
+function setWallet(n){localStorage.setItem('vantaWallet',String(Math.max(0,Math.round(n*100)/100)))}
+function correoActual(){try{const u=JSON.parse(localStorage.getItem('vantaUser')||'null');if(localStorage.getItem('vantaGuest')==='true'||!u)return CORREO_INVITADO;return u.correo||CORREO_INVITADO}catch(e){return CORREO_INVITADO}}
+function misPedidos(){const c=correoActual();return getOrders().filter(o=>!o.correo||o.correo===c)}
+function nuevoFolio(){const usados=new Set(getOrders().map(o=>o.id));let f;do{f='VNT-'+Math.floor(10000+Math.random()*90000)}while(usados.has(f));return f}
+function badgeEstado(e){
+ const cls=e.startsWith('Pendiente')?'badge-pendiente':e==='Cancelado'?'badge-cancelado':e==='Pagado'?'badge-activo':'badge-enviado';
+ return`<span class="${cls}">${esc(e)}</span>`;
+}
+/* Ticket / factura visual: se reutiliza en checkout, perfil y panel admin */
+function ticketHTML(o){
+ o=normalizarPedido(o);
+ const filas=o.items.map(i=>`<tr><td>${esc(i.cantidad)}×</td><td>${esc(i.nombre)}</td><td class="num">${money(i.precio)}</td><td class="num">${money(i.precio*i.cantidad)}</td></tr>`).join('');
+ const iva=o.total-o.total/1.16;
+ const efectivo=o.metodo==='efectivo'&&o.estado.startsWith('Pendiente');
+ return`<div class="ticket">
+  <div class="ticket-head"><div class="logo-mark">V</div><h3>VANTA</h3><small>Streetwear · Ciudad de México · RFC VAN260101XX0</small></div>
+  <div class="ticket-folio"><span>Folio</span><strong>${esc(o.id)}</strong><small>${esc(o.fecha||'')}</small></div>
+  <div class="ticket-datos">
+   <p><b>Cliente:</b> ${esc(o.cliente||'Invitado')}</p>
+   ${(o.contacto||o.correo)?`<p><b>Correo:</b> ${esc(o.contacto||o.correo)}</p>`:''}
+   ${o.direccion?`<p><b>Envío a:</b> ${esc(o.direccion)}</p>`:''}
+   <p><b>Método de pago:</b> ${esc(o.metodoTxt)}</p>
+   <p><b>Estado:</b> ${badgeEstado(o.estado)}</p>
+  </div>
+  ${efectivo?`<p class="ticket-nota">💵 Presenta este folio para liquidar ${money(o.total)} en efectivo al recibir tu pedido o en un punto autorizado.</p>`:''}
+  <table class="ticket-tabla"><thead><tr><th></th><th>Producto</th><th class="num">P. unit.</th><th class="num">Importe</th></tr></thead><tbody>${filas||'<tr><td colspan="4">Sin productos</td></tr>'}</tbody></table>
+  <div class="ticket-totales">
+   <div><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
+   ${o.descuento>0?`<div><span>Descuento ${esc(o.cupon||'')}</span><span>−${money(o.descuento)}</span></div>`:''}
+   <div class="ticket-iva"><span>IVA (16%) incluido</span><span>${money(iva)}</span></div>
+   <div class="ticket-total"><span>Total</span><span>${money(o.total)}</span></div>
+  </div>
+  <p class="ticket-pie">Comprobante simulado sin validez fiscal · Proyecto académico · ¡Gracias por vestir VANTA!</p>
+ </div>`;
+}
+function descargarTicket(){mostrarAlerta('Descarga de comprobante PDF simulada 📄','Descarga simulada')}
+function verTicketPedido(id){
+ const o=getOrders().find(x=>x.id===id);if(!o)return;
+ const box=document.getElementById('ticket-contenido');if(!box)return;
+ box.innerHTML=ticketHTML(o);document.getElementById('modalTicket').style.display='flex';
+}
+function cerrarTicket(){const x=document.getElementById('modalTicket');if(x)x.style.display='none'}
+function renderMisCompras(){
+ const oc=document.getElementById('mis-compras');if(!oc)return;
+ const os=misPedidos();
+ oc.innerHTML=os.length?os.map(o=>`<div class="fila compra-fila"><div><strong>${esc(o.id)}</strong> ${badgeEstado(o.estado)}<br><small>${esc(o.fecha)} · ${esc(o.metodoTxt)}${o.cupon?' · cupón '+esc(o.cupon):''}</small><br><strong>${money(o.total)}</strong></div><button class="btn btn-secundario" style="margin:0;padding:8px 14px;font-size:.85rem" onclick="verTicketPedido('${esc(o.id)}')">📄 Ver ticket</button></div>`).join(''):'<p>No tienes compras registradas todavía.</p>';
 }
 function filtrar(categoria,btn){
  document.querySelectorAll('.categoria-btn').forEach(x=>x.classList.remove('activa'));if(btn)btn.classList.add('activa');
@@ -171,7 +226,7 @@ function cargarPerfil(){
  const u=JSON.parse(localStorage.getItem('vantaUser')||'null');const guest=localStorage.getItem('vantaGuest')==='true';
  n.textContent=guest?'¡Hola, Invitado!':'¡Hola, '+(u?.nombre||'Usuario')+'!';
  const c=document.getElementById('perfil-correo');if(c)c.textContent=guest?'Navegando como invitado':(u?.correo||'usuario@vanta.com');
- const orders=JSON.parse(localStorage.getItem('vantaOrders')||'[]');const oc=document.getElementById('mis-compras');if(oc)oc.innerHTML=orders.length?orders.slice(0,10).map(o=>`<div class="fila"><strong>${o.id}</strong><br><small>${o.fecha} · ${money(o.total)}${o.cupon?' · cupón '+esc(o.cupon):''}</small></div>`).join(''):'<p>No tienes compras registradas todavía.</p>';
+ renderMisCompras();
 }
 function editarPerfil(){
  const u=JSON.parse(localStorage.getItem('vantaUser')||'null');if(!u){mostrarAlerta('Los invitados no tienen un perfil editable.');return}
@@ -180,12 +235,12 @@ function editarPerfil(){
 function guardarPerfil(e){e.preventDefault();const u=JSON.parse(localStorage.getItem('vantaUser')||'{}');u.nombre=document.getElementById('edit-nombre').value.trim()||u.nombre||'Usuario';u.correo=document.getElementById('edit-correo').value.trim()||u.correo||'usuario@vanta.com';localStorage.setItem('vantaUser',JSON.stringify(u));document.getElementById('modalEditarPerfil').style.display='none';cargarPerfil();mostrarAlerta('Tus datos fueron actualizados.','Perfil actualizado')}
 function mostrarPanelPerfil(tipo){
  const titles={direcciones:'Mis Direcciones',metodos:'Métodos de pago',deseos:'Lista de deseos'};
- const msgs={direcciones:'Aquí puedes gestionar tus domicilios de entrega.',metodos:'Los métodos de pago se administrarían en el checkout.',deseos:'Aquí aparecerán tus productos favoritos.'};
+ const msgs={direcciones:'Aquí puedes gestionar tus domicilios de entrega. La dirección se captura en el paso 1 del checkout.',metodos:`Aceptamos tarjeta, transferencia SPEI, e-wallet y pago en efectivo. Saldo VANTA Pay: ${money(getWallet())}. El método se elige en el checkout.`,deseos:'Aquí aparecerán tus productos favoritos.'};
  mostrarAlerta(msgs[tipo],titles[tipo]);
 }
 function initAdmin(){
  if(!document.getElementById('admin-productos'))return;
- renderAdminProducts();updateAdminStats();renderAdminCoupons();
+ renderAdminProducts();updateAdminStats();renderAdminCoupons();renderAdminOrders();
  const f=document.getElementById('formProductoAdmin');if(f)f.onsubmit=guardarProductoAdmin;
  const fc=document.getElementById('formCuponAdmin');if(fc)fc.onsubmit=guardarCuponAdmin;
 }
@@ -225,7 +280,22 @@ function guardarCuponAdmin(e){
 function toggleCuponAdmin(codigo){const cs=getCoupons(),c=cs.find(x=>x.codigo===codigo);if(!c)return;c.activo=!c.activo;saveCoupons(cs);renderAdminCoupons()}
 function confirmarEliminarCupon(codigo){document.getElementById('alertTitulo').textContent='Eliminar cupón';document.getElementById('alertMensaje').textContent=`¿Seguro que deseas eliminar el cupón "${codigo}"?`;document.getElementById('alertBotones').innerHTML=`<div style="display:flex;gap:10px"><button class="btn btn-secundario" onclick="cerrarAlerta()">Cancelar</button><button class="btn" onclick="ejecutarEliminarCupon('${codigo}')">Eliminar</button></div>`;document.getElementById('customAlert').style.display='flex'}
 function ejecutarEliminarCupon(codigo){saveCoupons(getCoupons().filter(x=>x.codigo!==codigo));cerrarAlerta();renderAdminCoupons()}
-function updateAdminStats(){const p=getProducts(),o=JSON.parse(localStorage.getItem('vantaOrders')||'[]'),ventas=o.reduce((n,x)=>n+x.total,0);const a=document.getElementById('stat-productos'),b=document.getElementById('stat-pedidos'),c=document.getElementById('stat-ventas');if(a)a.textContent=p.length;if(b)b.textContent=o.length;if(c)c.textContent=money(ventas)}
+/* Pedidos en el panel admin (conectados al checkout) */
+function renderAdminOrders(){
+ const t=document.getElementById('admin-pedidos');
+ const os=getOrders();
+ const q=(document.getElementById('buscar-pedido')?.value||'').toLowerCase().trim();
+ if(t){
+  const f=os.filter(o=>!q||[o.id,o.cliente,o.correo].some(v=>String(v||'').toLowerCase().includes(q)));
+  t.innerHTML=f.length?f.map(o=>`<tr><td><strong>${esc(o.id)}</strong><br><small>${esc(o.fecha)}</small></td><td>${esc(o.cliente||'Invitado')}<br><small>${esc(o.correo||'—')}</small></td><td><small>${o.items.map(i=>esc(i.cantidad+'× '+i.nombre)).join(', ')}</small></td><td>${esc(o.metodoTxt)}</td><td><strong>${money(o.total)}</strong></td><td><select class="select-estado" onchange="cambiarEstadoPedido('${esc(o.id)}',this.value)">${ESTADOS_PEDIDO.map(e=>`<option${e===o.estado?' selected':''}>${e}</option>`).join('')}</select></td><td><div class="admin-producto-acciones"><button class="btn-secundario" title="Ver ticket" onclick="verTicketPedido('${esc(o.id)}')">👁️</button><button class="btn-eliminar" title="Eliminar pedido" onclick="confirmarEliminarPedido('${esc(o.id)}')">🗑️</button></div></td></tr>`).join(''):`<tr><td colspan="7" style="color:#888">${os.length?'No se encontraron pedidos.':'Aún no hay pedidos registrados.'}</td></tr>`;
+ }
+ const u=document.getElementById('admin-ultimos-pedidos');
+ if(u)u.innerHTML=os.length?os.slice(0,5).map(o=>`<div class="fila" style="padding:10px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><span><strong>${esc(o.id)}</strong> · ${esc(o.fecha)} · ${esc(o.cliente||'Invitado')}</span><span>${badgeEstado(o.estado)} <strong>${money(o.total)}</strong></span></div>`).join(''):'<p style="color:#888">No hay pedidos registrados todavía.</p>';
+}
+function cambiarEstadoPedido(id,estado){const os=getOrders(),o=os.find(x=>x.id===id);if(!o)return;o.estado=estado;saveOrders(os);updateAdminStats();renderAdminOrders();mostrarAlerta(`El pedido ${id} ahora está "${estado}".`,'Estado actualizado')}
+function confirmarEliminarPedido(id){document.getElementById('alertTitulo').textContent='Eliminar pedido';document.getElementById('alertMensaje').textContent=`¿Seguro que deseas eliminar el pedido ${id} del historial?`;document.getElementById('alertBotones').innerHTML=`<div style="display:flex;gap:10px"><button class="btn btn-secundario" style="flex:1" onclick="cerrarAlerta()">Cancelar</button><button class="btn" style="flex:1" onclick="ejecutarEliminarPedido('${id}')">Eliminar</button></div>`;document.getElementById('customAlert').style.display='flex'}
+function ejecutarEliminarPedido(id){saveOrders(getOrders().filter(x=>x.id!==id));cerrarAlerta();updateAdminStats();renderAdminOrders()}
+function updateAdminStats(){const p=getProducts(),o=getOrders(),ventas=o.filter(x=>x.estado!=='Cancelado').reduce((n,x)=>n+x.total,0);const a=document.getElementById('stat-productos'),b=document.getElementById('stat-pedidos'),c=document.getElementById('stat-ventas');if(a)a.textContent=p.length;if(b)b.textContent=o.length;if(c)c.textContent=money(ventas)}
 document.addEventListener('DOMContentLoaded',()=>{
  if(!localStorage.getItem('vantaProducts'))saveProducts(DEFAULT_PRODUCTS);
  if(localStorage.getItem('vantaC2C')===null)saveC2C(DEFAULT_C2C);
